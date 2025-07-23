@@ -864,6 +864,8 @@
         .avia-progress-fill {
             animation: fillLiquid 2.5s ease-in-out forwards;
             width: 0%;
+            position: relative;
+            overflow: hidden;
         }
 
         /* 进度条光泽效果 */
@@ -879,6 +881,12 @@
                     rgba(255, 255, 255, 0.3) 50%,
                     rgba(255, 255, 255, 0) 100%);
             animation: shine 2.5s infinite;
+        }
+
+        .avia-progress-fill::after {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            -webkit-transform: translate3d(0, 0, 0);
         }
 
         @keyframes shine {
