@@ -254,6 +254,8 @@
             height: 100%;
             object-fit: cover;
             z-index: 0;
+            pointer-events: none;
+            /* Optional: Prevent video from blocking clicks */
         }
 
         /* ✅ Gradient overlay above video */
@@ -1370,9 +1372,10 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <video autoplay muted loop playsinline class="hero-bg-video">
-            <source src="./assets/images/banner-new.mp4" type="video/mp4">
+        <video class="hero-bg-video" muted autoplay loop playsinline data-src="./assets/images/banner-new.mp4">
+            <source type="video/mp4">
         </video>
+
 
         <div class="container">
             <div class="hero-content fade-element">
@@ -1953,18 +1956,26 @@
         // 视频自动播放处理
         window.addEventListener('load', function () {
             const heroVideo = document.querySelector('.hero-bg-video');
+
             if (heroVideo) {
                 heroVideo.muted = true;
+                heroVideo.setAttribute('playsinline', ''); // Extra safety for iOS
+                heroVideo.setAttribute('autoplay', '');
+                heroVideo.setAttribute('loop', '');
                 heroVideo.play().catch(e => console.log('Autoplay prevented:', e));
             }
 
-            // 懒加载视频
+            // Lazy load videos with data-src
             const lazyVideos = document.querySelectorAll('video[data-src]');
             lazyVideos.forEach(video => {
-                video.src = video.getAttribute('data-src');
-                video.load();
+                const src = video.getAttribute('data-src');
+                if (src) {
+                    video.src = src;
+                    video.load();
+                }
             });
         });
+
     </script>
 </body>
 
