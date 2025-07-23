@@ -234,14 +234,17 @@
 
         /********************* HERO SECTION ******************/
         .hero {
+            position: relative;
             min-height: 110vh;
             display: flex;
             align-items: center;
+            justify-content: center;
             padding: 100px 0 150px;
-            position: relative;
             overflow: hidden;
             clip-path: ellipse(100% 85% at 50% 0%);
             text-align: center;
+            z-index: 1;
+            background: #000;
             /* Fallback background */
         }
 
@@ -268,6 +271,7 @@
             z-index: 1;
         }
 
+        /* White bottom curve */
         .hero::after {
             content: '';
             position: absolute;
@@ -278,6 +282,7 @@
             background: white;
             border-radius: 50% 50% 0 0 / 100px 100px 0 0;
             transform: scaleX(3);
+            z-index: 3;
         }
 
         /* Content */
@@ -1370,7 +1375,7 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <video class="hero-bg-video" autoplay muted loop playsinline>
+        <video class="hero-bg-video" autoplay muted loop playsinline preload="auto">
             <source src="./assets/images/banner-new.mp4" type="video/mp4" />
         </video>
 
