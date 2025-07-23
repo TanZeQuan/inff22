@@ -259,18 +259,6 @@
             pointer-events: none;
         }
 
-        /* Dark gradient overlay */
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.705), rgba(12, 12, 12, 0.253));
-            z-index: 1;
-        }
-
         /* White bottom curve */
         .hero::after {
             content: '';
@@ -279,7 +267,7 @@
             left: 0;
             right: 0;
             height: 100px;
-            background: white;
+            background: linear-gradient(rgba(0, 0, 0, 0.705), rgba(12, 12, 12, 0.253));
             border-radius: 50% 50% 0 0 / 100px 100px 0 0;
             transform: scaleX(3);
             z-index: 3;
@@ -1961,25 +1949,20 @@
             const heroVideo = document.querySelector('.hero-bg-video');
 
             if (heroVideo) {
-                // Set properties for maximum mobile compatibility
                 heroVideo.muted = true;
-                heroVideo.playsInline = true;
-                heroVideo.autoplay = true;
-                heroVideo.loop = true;
-
-                // Also set attributes (for some stubborn browsers)
-                heroVideo.setAttribute('muted', '');
                 heroVideo.setAttribute('playsinline', '');
                 heroVideo.setAttribute('autoplay', '');
                 heroVideo.setAttribute('loop', '');
 
-                heroVideo.load(); // Ensure it's reloaded properly
-                heroVideo.play().catch(e => console.log('Autoplay prevented:', e));
+                // Try to autoplay
+                heroVideo.play().catch((e) => {
+                    console.log('Autoplay prevented:', e);
+                });
             }
 
-            // Lazy load any videos with data-src
+            // Lazy load videos with data-src (optional)
             const lazyVideos = document.querySelectorAll('video[data-src]');
-            lazyVideos.forEach(video => {
+            lazyVideos.forEach((video) => {
                 const src = video.getAttribute('data-src');
                 if (src) {
                     video.src = src;
@@ -1987,7 +1970,6 @@
                 }
             });
         });
-
     </script>
 </body>
 
