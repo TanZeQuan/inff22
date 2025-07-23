@@ -234,18 +234,41 @@
 
         /********************* HERO SECTION ******************/
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.863), rgba(80, 80, 80, 0.164)),
-                url('./assets/images/bg-banner-new.png') center/cover;
+            position: relative;
             min-height: 110vh;
             display: flex;
             align-items: center;
             padding: 100px 0 150px;
-            position: relative;
             overflow: hidden;
             clip-path: ellipse(100% 85% at 50% 0%);
             text-align: center;
+            z-index: 1;
         }
 
+        /* ✅ Video background behind everything */
+        .hero video.hero-bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        /* ✅ Gradient overlay above video */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.705), rgba(12, 12, 12, 0.253));
+            z-index: 1;
+        }
+
+        /* ✅ Curved white bottom (as you already had) */
         .hero::after {
             content: '';
             position: absolute;
@@ -256,8 +279,10 @@
             background: white;
             border-radius: 50% 50% 0 0 / 100px 100px 0 0;
             transform: scaleX(3);
+            z-index: 3;
         }
 
+        /* ✅ Text and button content on top of everything */
         .hero-content {
             color: white;
             position: relative;
@@ -287,7 +312,7 @@
         }
 
         .apply-btn {
-            background: linear-gradient(45deg, var(--primary-color), #4CAF50);
+            background: linear-gradient(135deg, #4CAF50, #A8E063);
             color: white;
             padding: 12px 30px;
             border: none;
@@ -295,18 +320,27 @@
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(126, 211, 33, 0.3);
-            animation: fadeInUp 1s ease-out 0.4s forwards;
-            opacity: 0;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            position: relative;
+            z-index: 1;
         }
 
+        /* Hover 浮动 + 发光 */
         .apply-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 3px 30px rgba(215, 245, 181, 0.795);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.5);
         }
+
+        /* 点击时按压感 */
+        .apply-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3) inset;
+        }
+
+
 
         /****************** ABOUT SECTION ***************/
         .about-wrapper {
@@ -821,6 +855,31 @@
             width: 0%;
         }
 
+        /* 进度条光泽效果 */
+        .avia-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.3) 50%,
+                    rgba(255, 255, 255, 0) 100%);
+            animation: shine 2.5s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
         /**** animation fade in out *****/
         .reveal-element {
             opacity: 0;
@@ -1041,6 +1100,23 @@
 
             .about-service-content {
                 text-align: left;
+            }
+
+            /* 微交互增强 */
+            .about-service-card:hover .about-service-icon img {
+                animation: bounce 0.5s ease;
+            }
+
+            @keyframes bounce {
+
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-10px);
+                }
             }
 
             .avia-stat-card {
@@ -1294,6 +1370,10 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
+        <video autoplay muted loop playsinline class="hero-bg-video">
+            <source src="./assets/images/banner-new.mp4" type="video/mp4">
+        </video>
+
         <div class="container">
             <div class="hero-content fade-element">
                 <h1>
@@ -1304,7 +1384,7 @@
                     We are not "selling insurance"; we are building a new insurance finance system where everyone can
                     participate and share in the returns.
                 </p>
-                <button class="apply-btn">Apply Now</button>
+                <button class="apply-btn fade-element">Apply Now</button>
             </div>
         </div>
     </section>
@@ -1314,7 +1394,7 @@
         <div class="about-main-section">
             <div class="about-text-content fade-element">
                 <h1 class="about-title">About Us</h1>
-                <h2 class="about-tagline">From Insurance to Asset Freedom</h2>
+                <h2 class="about-tagline fade-element">From Insurance to Asset Freedom</h2>
 
                 <p class="about-overview fade-element">
                     We are an innovative platform integrating insurance and fintech, headquartered in Hong Kong with
@@ -1323,7 +1403,7 @@
                     unlock long-term value.
                 </p>
 
-                <p class="about-company-details">
+                <p class="about-company-details fade-element">
                     The platform is part of the renowned British insurance group <span class="about-emphasis">Aviva
                         plc</span>, with a history of <span class="about-emphasis">over 300 years</span> and more than
                     <span class="about-emphasis">30 million customers</span> globally — a symbol of financial stability
@@ -1331,14 +1411,14 @@
                 </p>
             </div>
 
-            <div class="about-image-content fade-element">
-                <video class="about-hero-img" autoplay muted loop playsinline>
+            <div class="about-image-content reveal-element">
+                <video class="about-hero-img reveal-element" autoplay muted loop playsinline>
                     <source src="./assets/images/about-partA.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
 
-        <div class="about-services-section">
+        <div class="about-services-section fade-element">
             <div class="about-service-card fade-element">
                 <div class="about-service-content">
                     <h3 class="about-service-title">Digitalization of Insurance Assets</h3>
@@ -1385,23 +1465,23 @@
         <div class="what-we-do">
             <h2>What We Do</h2>
 
-            <video class="about-hero-img" autoplay muted loop playsinline>
+            <video class="about-hero-img fade-element" autoplay muted loop playsinline>
                 <source src="./assets/images/about-partB.mp4" type="video/mp4">
             </video>
 
             <div class="cards">
-                <div class="card fade-element">
+                <div class="card animate-zoom-rotate">
                     <h3>Insurance Asset Digitalization:</h3>
                     <p>Convert savings-type policies and annuities with cash value into digital assets for more
                         transparent
                         management and flexible operations.</p>
                 </div>
-                <div class="card fade-element">
+                <div class="card animate-zoom-rotate">
                     <h3>Empowering Individuals & Institutions:</h3>
                     <p>Whether personal financial planning or institutional investment, you can participate in low-risk,
                         long-term estate growth in insurance finance.</p>
                 </div>
-                <div class="card fade-element">
+                <div class="card animate-zoom-rotate">
                     <h3>On-Chain Policy Value:</h3>
                     <p>Each policy is certified on-chain, with real, traceable assets—safe, reliable, and clearly
                         valued.
@@ -1416,7 +1496,7 @@
     <section class="session-bg">
         <div class="policy-section ">
             <!-- Left: Text Content -->
-            <div class="policy-text animate-zoom-rotate">
+            <div class="policy-text fade-element">
                 <h2>Turn Your Policy into<br><span>Cash Flow</span></h2>
                 <p>
                     We provide a one-stop service around five key areas of policy assets:
@@ -1825,6 +1905,65 @@
 
         document.querySelectorAll('.animate-zoom-rotate').forEach((el) => {
             observer.observe(el);
+        });
+
+
+        // 滚动动画控制器
+        document.addEventListener('DOMContentLoaded', function () {
+            // 进度条动画
+            const progressBars = document.querySelectorAll('.avia-progress-fill');
+            progressBars.forEach(bar => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            bar.style.animation = `fillLiquid 2.5s ease-in-out forwards`;
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                observer.observe(bar);
+            });
+
+
+            // 按钮波纹效果
+            const buttons = document.querySelectorAll('.apply-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const x = e.clientX - e.target.getBoundingClientRect().left;
+                    const y = e.clientY - e.target.getBoundingClientRect().top;
+
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 1000);
+                });
+            });
+
+            // 初始化所有动画
+            animateOnScroll();
+        });
+
+        // 视频自动播放处理
+        window.addEventListener('load', function () {
+            const heroVideo = document.querySelector('.hero-bg-video');
+            if (heroVideo) {
+                heroVideo.muted = true;
+                heroVideo.play().catch(e => console.log('Autoplay prevented:', e));
+            }
+
+            // 懒加载视频
+            const lazyVideos = document.querySelectorAll('video[data-src]');
+            lazyVideos.forEach(video => {
+                video.src = video.getAttribute('data-src');
+                video.load();
+            });
         });
     </script>
 </body>
