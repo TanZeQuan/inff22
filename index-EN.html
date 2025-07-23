@@ -1375,8 +1375,8 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <video class="hero-bg-video" autoplay muted loop playsinline preload="auto">
-            <source src="./assets/images/banner-new.mp4" type="video/mp4" />
+        <video class="hero-bg-video" autoplay muted loop playsinline>
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
         </video>
 
         <div class="container">
@@ -1965,7 +1965,6 @@
                 heroVideo.setAttribute('playsinline', '');
                 heroVideo.setAttribute('autoplay', '');
                 heroVideo.setAttribute('loop', '');
-
                 // Try to autoplay
                 heroVideo.play().catch((e) => {
                     console.log('Autoplay prevented:', e);
