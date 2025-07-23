@@ -234,18 +234,48 @@
 
         /********************* HERO SECTION ******************/
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.863), rgba(80, 80, 80, 0.164)),
-                url('./assets/images/bg-banner-new.png') center/cover;
+            position: relative;
             min-height: 110vh;
             display: flex;
             align-items: center;
+            justify-content: center;
             padding: 100px 0 150px;
-            position: relative;
             overflow: hidden;
             clip-path: ellipse(100% 85% at 50% 0%);
             text-align: center;
+            z-index: 1;
+            background: #000;
+            /* Fallback background */
         }
 
+        .hero-bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            /* <- was 0, now above ::before which is z-index: 1 */
+            pointer-events: none;
+            display: block;
+        }
+
+
+        /* Dark gradient overlay */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.705), rgba(78, 78, 78, 0.212));
+            z-index: 2;
+            /* ensure it's above video if needed */
+        }
+
+        /* White bottom curve */
         .hero::after {
             content: '';
             position: absolute;
@@ -256,14 +286,18 @@
             background: white;
             border-radius: 50% 50% 0 0 / 100px 100px 0 0;
             transform: scaleX(3);
+            z-index: 3;
         }
 
+        /* Content */
         .hero-content {
             color: white;
             position: relative;
             z-index: 2;
             animation: fadeInUp 1s ease-out;
             width: 100%;
+            position: relative;
+            z-index: 3;
         }
 
         .hero h1 {
@@ -280,32 +314,61 @@
         .hero p {
             font-size: clamp(1rem, 3vw, 1.2rem);
             margin: 0 auto 2.5rem;
-            opacity: 0.9;
             max-width: 600px;
-            animation: fadeInUp 1s ease-out 0.2s forwards;
             opacity: 0;
+            animation: fadeInUp 1s ease-out 0.2s forwards;
         }
 
         .apply-btn {
-            background: linear-gradient(45deg, var(--primary-color), #4CAF50);
-            color: white;
             padding: 12px 30px;
-            border: none;
-            border-radius: 50px;
             font-size: 1rem;
             font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            background-color: var(--primary-color);
+            color: #fff;
             cursor: pointer;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(126, 211, 33, 0.3);
-            animation: fadeInUp 1s ease-out 0.4s forwards;
-            opacity: 0;
+            animation: jumpPulseGlow 1.8s ease-in-out infinite;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 0 rgba(255, 255, 255, 0);
         }
 
-        .apply-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 3px 30px rgba(215, 245, 181, 0.795);
+        /* Jump + Glow Pulse Keyframes */
+        @keyframes jumpPulseGlow {
+
+            0%,
+            100% {
+                transform: translateY(0);
+                box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+            }
+
+            30% {
+                transform: translateY(-8px);
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            }
+
+            50% {
+                transform: translateY(0);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+
+            70% {
+                transform: translateY(-4px);
+                box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        /* Fade In Effect (Optional, if you use it on load) */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /****************** ABOUT SECTION ***************/
@@ -459,6 +522,23 @@
             color: #666;
             line-height: 1.6;
             font-size: 0.95rem;
+        }
+
+        /* 微交互增强 */
+        .about-service-card:hover .about-service-icon img {
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         @media (max-width: 768px) {
@@ -819,6 +899,37 @@
         .avia-progress-fill {
             animation: fillLiquid 2.5s ease-in-out forwards;
             width: 0%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 进度条光泽效果 */
+        .avia-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.3) 50%,
+                    rgba(255, 255, 255, 0) 100%);
+            animation: shine 2.5s infinite linear;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+            /* <- iOS fix */
+        }
+
+
+        @keyframes shine {
+            0% {
+                -webkit-transform: translateX(-100%);
+            }
+
+            100% {
+                -webkit-transform: translateX(100%);
+            }
         }
 
         /**** animation fade in out *****/
@@ -1277,12 +1388,12 @@
                     <button class="dropdown-btn" id="languageBtn">
                         <i class="fas fa-globe"></i> Bahasa
                     </button>
-                     <div class="dropdown-content" id="languageDropdown">
+                    <div class="dropdown-content" id="languageDropdown">
                         <a href="index-EN.html" onclick="changeLanguage('English')">English</a>
                         <a href="index-MY.html" onclick="changeLanguage('Bahasa Malaysia')">Bahasa Malaysia</a>
                         <a href="index-CN.html" onclick="changeLanguage('中文')">中文</a>
                         <a href="index-TW.html" onclick="changeLanguage('中文')">繁体</a>
-                        <a href="index-IND.html" onclick="changeLanguage('Tamil')">Tamil</a>
+                        <a href="index-IND.html" onclick="changeLanguage('Tamil')">Bahasa Indonesia</a>
                     </div>
                 </li>
             </ul>
@@ -1294,27 +1405,32 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
+        <video class="hero-bg-video" autoplay muted loop playsinline>
+            <source src="./assets/images/banner-new.mp4" type="video/mp4" />
+        </video>
+
         <div class="container">
-            <div class="hero-content fade-element">
+            <div class="hero-content">
                 <h1>
-                    <span class="highlight">AVIA ASIA</span> LIMITED<br>
-                    Jadikan Polisi Anda Aset Yang Bernilai
+                    <span class="highlight">AVIA ASIA</span> LIMITED<br />
+                    Jadikan Setiap Polisi Sebagai Aset Bernilai
                 </h1>
                 <p>
-                    Kami bukan "menjual insurans"; kami sedang membina sistem kewangan insurans baharu di mana semua
-                    orang boleh mengambil bahagian dan berkongsi pulangan.
+                    Kami bukan menjual "insurans"; kami sedang membina sistem kewangan insurans yang baharu
+                    di mana semua orang boleh menyertai dan berkongsi pulangan.
                 </p>
                 <button class="apply-btn">Mohon Sekarang</button>
             </div>
         </div>
     </section>
 
+
     <!-- About Section -->
     <div class="about-wrapper" id="about">
         <div class="about-main-section">
             <div class="about-text-content fade-element">
                 <h1 class="about-title">Tentang Kami</h1>
-                <h2 class="about-tagline">Daripada Insurans ke Kebebasan Aset</h2>
+                <h2 class="about-tagline fade-element">Daripada Insurans ke Kebebasan Aset</h2>
 
                 <p class="about-overview fade-element">
                     Kami ialah platform inovatif yang menggabungkan insurans dan teknologi kewangan, berpangkalan di
@@ -1323,7 +1439,7 @@
                     dan membuka nilai jangka panjang.
                 </p>
 
-                <p class="about-company-details">
+                <p class="about-company-details fade-element">
                     Platform ini adalah sebahagian daripada kumpulan insurans British yang terkenal <span
                         class="about-emphasis">Aviva plc</span>, dengan sejarah melebihi <span
                         class="about-emphasis">300 tahun</span> dan lebih daripada <span class="about-emphasis">30 juta
@@ -1331,14 +1447,14 @@
                 </p>
             </div>
 
-            <div class="about-image-content fade-element">
+            <div class="about-image-content reveal-element">
                 <video class="about-hero-img" autoplay muted loop playsinline>
                     <source src="./assets/images/about-partA.mp4" type="video/mp4">
                 </video>
             </div>
         </div>
 
-        <div class="about-services-section">
+        <div class="about-services-section fade-element">
             <div class="about-service-card fade-element">
                 <div class="about-service-content">
                     <h3 class="about-service-title">Pendigitalan Aset Insurans</h3>
@@ -1384,23 +1500,23 @@
     <section class="what-we-do-container reveal-element">
         <div class="what-we-do">
             <h2>Apa Yang Kami Lakukan</h2>
-           
-                 <video class="about-hero-img" autoplay muted loop playsinline>
-                    <source src="./assets/images/about-partB.mp4" type="video/mp4">
-                </video>
-        
+
+            <video class="about-hero-img" autoplay muted loop playsinline>
+                <source src="./assets/images/about-partB.mp4" type="video/mp4">
+            </video>
+
             <div class="cards">
-                <div class="card fade-element">
+                <div class="card animate-zoom-rotate">
                     <h3>Pendigitalan Aset Insurans:</h3>
                     <p>Tukar polisi simpanan dan anuiti dengan nilai tunai kepada aset digital untuk pengurusan yang
                         lebih telus dan operasi fleksibel.</p>
                 </div>
-                <div class="card fade-element">
+                <div class="card animate-zoom-rotate">
                     <h3>Memperkasa Individu & Institusi:</h3>
                     <p>Sama ada perancangan kewangan peribadi atau pelaburan institusi, anda boleh menyertai pertumbuhan
                         harta jangka panjang dalam kewangan insurans.</p>
                 </div>
-                <div class="card fade-element">
+                <div class="card animate-zoom-rotate">
                     <h3>Nilai Polisi Atas Rantaian:</h3>
                     <p>Setiap polisi disahkan atas rantaian dengan aset sebenar yang boleh dijejaki — selamat, boleh
                         dipercayai dan jelas nilainya.</p>
@@ -1415,7 +1531,7 @@
     <section class="session-bg">
         <div class="policy-section ">
             <!-- Left: Text Content -->
-            <div class="policy-text animate-zoom-rotate">
+            <div class="policy-text fade-element">
                 <h2>Tukar Polisi Anda kepada<br><span>Aliran Tunai</span></h2>
                 <p>
                     Kami menyediakan perkhidmatan sehenti dalam lima bidang utama aset polisi:
@@ -1480,6 +1596,7 @@
                     <div class="avia-progress-box">
                         <div class="avia-progress-bg">
                             <div class="avia-progress-fill red"></div>
+                            <div class="shine"></div>
                             <div class="avia-percent">22%</div>
                             <div class="avia-label">Nasihat Pendapatan Bulanan</div>
                         </div>
@@ -1496,6 +1613,7 @@
                 <div class=" avia-progress-box">
                         <div class="avia-progress-bg">
                             <div class="avia-progress-fill blue"></div>
+                            <div class="shine"></div>
                             <div class="avia-percent">72%</div>
                             <div class="avia-label">72% Pemegang Polisi Jangka Panjang</div>
                         </div>
@@ -1511,6 +1629,7 @@
                     <div class="avia-progress-box">
                         <div class="avia-progress-bg">
                             <div class="avia-progress-fill green"></div>
+                            <div class="shine"></div>
                             <div class="avia-percent">80%</div>
                             <div class="avia-label">80% Berumur 60+ Disahkan</div>
                         </div>

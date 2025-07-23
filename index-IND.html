@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AVIA ASIA LIMITED - தமிழ் பதிப்பு</title>
+    <title>AVIA ASIA LIMITED - IND version</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
@@ -234,18 +234,48 @@
 
         /********************* HERO SECTION ******************/
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.863), rgba(80, 80, 80, 0.164)),
-                url('./assets/images/bg-banner-new.png') center/cover;
+            position: relative;
             min-height: 110vh;
             display: flex;
             align-items: center;
+            justify-content: center;
             padding: 100px 0 150px;
-            position: relative;
             overflow: hidden;
             clip-path: ellipse(100% 85% at 50% 0%);
             text-align: center;
+            z-index: 1;
+            background: #000;
+            /* Fallback background */
         }
 
+        .hero-bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            /* <- was 0, now above ::before which is z-index: 1 */
+            pointer-events: none;
+            display: block;
+        }
+
+
+        /* Dark gradient overlay */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(0, 0, 0, 0.705), rgba(78, 78, 78, 0.212));
+            z-index: 2;
+            /* ensure it's above video if needed */
+        }
+
+        /* White bottom curve */
         .hero::after {
             content: '';
             position: absolute;
@@ -256,14 +286,18 @@
             background: white;
             border-radius: 50% 50% 0 0 / 100px 100px 0 0;
             transform: scaleX(3);
+            z-index: 3;
         }
 
+        /* Content */
         .hero-content {
             color: white;
             position: relative;
             z-index: 2;
             animation: fadeInUp 1s ease-out;
             width: 100%;
+            position: relative;
+            z-index: 3;
         }
 
         .hero h1 {
@@ -280,32 +314,61 @@
         .hero p {
             font-size: clamp(1rem, 3vw, 1.2rem);
             margin: 0 auto 2.5rem;
-            opacity: 0.9;
             max-width: 600px;
-            animation: fadeInUp 1s ease-out 0.2s forwards;
             opacity: 0;
+            animation: fadeInUp 1s ease-out 0.2s forwards;
         }
 
         .apply-btn {
-            background: linear-gradient(45deg, var(--primary-color), #4CAF50);
-            color: white;
             padding: 12px 30px;
-            border: none;
-            border-radius: 50px;
             font-size: 1rem;
             font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            background-color: var(--primary-color);
+            color: #fff;
             cursor: pointer;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(126, 211, 33, 0.3);
-            animation: fadeInUp 1s ease-out 0.4s forwards;
-            opacity: 0;
+            animation: jumpPulseGlow 1.8s ease-in-out infinite;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 0 rgba(255, 255, 255, 0);
         }
 
-        .apply-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 3px 30px rgba(215, 245, 181, 0.795);
+        /* Jump + Glow Pulse Keyframes */
+        @keyframes jumpPulseGlow {
+
+            0%,
+            100% {
+                transform: translateY(0);
+                box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+            }
+
+            30% {
+                transform: translateY(-8px);
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            }
+
+            50% {
+                transform: translateY(0);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+
+            70% {
+                transform: translateY(-4px);
+                box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        /* Fade In Effect (Optional, if you use it on load) */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /****************** ABOUT SECTION ***************/
@@ -819,6 +882,37 @@
         .avia-progress-fill {
             animation: fillLiquid 2.5s ease-in-out forwards;
             width: 0%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 进度条光泽效果 */
+        .avia-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg,
+                    rgba(255, 255, 255, 0) 0%,
+                    rgba(255, 255, 255, 0.3) 50%,
+                    rgba(255, 255, 255, 0) 100%);
+            animation: shine 2.5s infinite linear;
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+            /* <- iOS fix */
+        }
+
+
+        @keyframes shine {
+            0% {
+                -webkit-transform: translateX(-100%);
+            }
+
+            100% {
+                -webkit-transform: translateX(100%);
+            }
         }
 
         /**** animation fade in out *****/
@@ -1268,20 +1362,20 @@
             </div>
 
             <ul class="nav-links" id="navLinks">
-                <li><a href="#home">முகப்பு</a></li>
-                <li><a href="#about">எங்களைப் பற்றி</a></li>
-                <li><a href="./assets/images/avia-whitepaper-en.pdf">வெயிட் பேப்பர்</a></li>
-                <li><a href="#vision">திட்டம்நோக்கு</a></li>
+                <li><a href="#home">Beranda</a></li>
+                <li><a href="#about">Tentang Kami</a></li>
+                <li><a href="./assets/images/avia-whitepaper-en.pdf">Whitepaper</a></li>
+                <li><a href="#vision">Visi</a></li>
                 <li class="language-dropdown">
                     <button class="dropdown-btn" id="languageBtn">
-                        <i class="fas fa-globe"></i> மொழி
+                        <i class="fas fa-globe"></i> Bahasa
                     </button>
-                  <div class="dropdown-content" id="languageDropdown">
+                    <div class="dropdown-content" id="languageDropdown">
                         <a href="index-EN.html" onclick="changeLanguage('English')">English</a>
                         <a href="index-MY.html" onclick="changeLanguage('Bahasa Malaysia')">Bahasa Malaysia</a>
                         <a href="index-CN.html" onclick="changeLanguage('中文')">中文</a>
-                        <a href="index-TW.html" onclick="changeLanguage('中文')">繁体</a>
-                        <a href="index-IND.html" onclick="changeLanguage('Tamil')">Tamil</a>
+                        <a href="index-TW.html" onclick="changeLanguage('繁体')">繁体</a>
+                        <a href="index-IND.html" onclick="changeLanguage('Bahasa Indonesia')">Bahasa Indonesia</a>
                     </div>
                 </li>
             </ul>
@@ -1293,18 +1387,21 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
+        <video class="hero-bg-video" autoplay muted loop playsinline>
+            <source src="./assets/images/banner-new.mp4" type="video/mp4" />
+        </video>
+
         <div class="container">
-            <div class="hero-content fade-element">
+            <div class="hero-content">
                 <h1>
-                    <span class="highlight">AVIA ASIA</span> LIMITED<br>
-                    உங்கள் காப்பீட்டை மதிப்புமிக்க சொத்தாக மாற்றுங்கள்
+                    <span class="highlight">AVIA ASIA</span> LIMITED<br />
+                    Jadikan Setiap Polis Sebagai Aset yang Bernilai
                 </h1>
                 <p>
-                    நாங்கள் “காப்பீட்டை” விற்கவில்லை; நாங்கள் ஒரு புதிய
-                    காப்பீட்டு நிதி அமைப்பை உருவாக்கி வருகிறோம், அதில் அனைவருக்கும்
-                    பங்குபெறவும், இலாபங்களைப் பகிரவும் வாய்ப்பு உள்ளது.
+                    Kami bukan "menjual asuransi"; kami sedang membangun sistem keuangan asuransi yang baru
+                    di mana semua orang dapat berpartisipasi dan berbagi keuntungan.
                 </p>
-                <button class="apply-btn">இப்போது விண்ணப்பிக்கவும்</button>
+                <button class="apply-btn">Daftar Sekarang</button>
             </div>
         </div>
     </section>
@@ -1314,21 +1411,21 @@
     <div class="about-wrapper" id="about">
         <div class="about-main-section">
             <div class="about-text-content fade-element">
-                <h1 class="about-title">எங்களை பற்றி</h1>
-                <h2 class="about-tagline">காப்பீட்டிலிருந்து சொத்து சுதந்திரம் வரை</h2>
+                <h1 class="about-title">Tentang Kami</h1>
+                <h2 class="about-tagline fade-element">Dari Asuransi Menuju Kebebasan Aset</h2>
 
                 <p class="about-overview fade-element">
-                    ஹாங்காங்கை மையமாகக் கொண்டு பல்வேறு ஆசிய சந்தைகளில் இயங்கும் நாங்கள், காப்பீடு மற்றும் நிதி
-                    தொழில்நுட்பத்தை இணைக்கும் ஒரு புதுமையான தளமாக இருக்கிறோம். காப்பீடு நிறுவனங்கள், நம்பிக்கையகங்கள்
-                    மற்றும் ஒழுங்குமுறை முனைப்புப் பகுதிகளுடன் கூட்டு முயற்சிகள் மூலம், பாரம்பரிய காப்பீட்டு சொத்துகளை
-                    எண்ணெய் இல்லாமல் மின்னணுவாக்கி, நீண்டகால மதிப்பைத் திறக்கிறோம்.
+                    Berbasis di Hong Kong dan beroperasi di berbagai pasar Asia, kami adalah platform inovatif yang
+                    menghubungkan asuransi dan teknologi keuangan. Melalui kemitraan dengan perusahaan asuransi, lembaga
+                    kepercayaan, dan badan pengatur, kami mendigitalkan aset asuransi tradisional untuk membuka nilai
+                    jangka panjang tanpa gesekan.
                 </p>
 
                 <p class="about-company-details">
-                    இந்த தளம் புகழ்பெற்ற பிரிட்டிஷ் காப்பீட்டு குழுவான <span class="about-emphasis">Aviva plc</span>-இன்
-                    ஒரு பகுதியாகும், இது <span class="about-emphasis">300 ஆண்டுகள்</span> கடந்து <span
-                        class="about-emphasis">30 மில்லியனுக்கு மேற்பட்ட வாடிக்கையாளர்களுடன்</span> உலகளாவிய அளவில்
-                    நம்பகத்தன்மையும் நிதி நிலைத்தன்மையும் கொண்ட நிறுவனமாக இருக்கிறது.
+                    Platform ini merupakan bagian dari <span class="about-emphasis">Aviva plc</span>, sebuah grup
+                    asuransi Inggris ternama dengan sejarah lebih dari <span class="about-emphasis">300 tahun</span> dan
+                    lebih dari <span class="about-emphasis">30 juta pelanggan</span> di seluruh dunia, dikenal karena
+                    kepercayaan dan stabilitas keuangannya.
                 </p>
             </div>
 
@@ -1339,134 +1436,133 @@
             </div>
         </div>
 
-        <div class="about-services-section">
+        <div class="about-services-section fade-element">
             <div class="about-service-card fade-element">
                 <div class="about-service-content">
-                    <h3 class="about-service-title">காப்பீட்டு சொத்துகளின் மின்னணுவாக்கம்</h3>
+                    <h3 class="about-service-title">Digitalisasi Aset Asuransi</h3>
                     <p class="about-service-text">
-                        பாரம்பரிய சேமிப்பு காப்பீடுகள், வாழ்நாள் வருமானக் கொள்கைகள் மற்றும் பிற மதிப்புள்ள சொத்துகளை,
-                        தொழில்நுட்பத்தின் மூலம் நிர்வாகம் மற்றும் செயல்பாட்டிற்கான மின்னணு சான்றிதழ்களாக மாற்றுகிறோம்.
+                        Kami mengubah polis asuransi tradisional, polis penghasilan seumur hidup, dan aset bernilai
+                        lainnya menjadi sertifikat digital untuk manajemen dan operasi melalui teknologi.
                     </p>
                 </div>
                 <div class="about-service-icon">
-                    <img src="./assets/images/Group-1.png" alt="மின்னணுவாக்க சின்னம்">
+                    <img src="./assets/images/Group-1.png" alt="Ikon Digitalisasi">
                 </div>
             </div>
 
             <div class="about-service-card align-right fade-element">
                 <div class="about-service-content">
-                    <h3 class="about-service-title">தொகுப்பின் மதிப்பு பிளாக்க்செயினில்</h3>
+                    <h3 class="about-service-title">Nilai Kolektif di Blockchain</h3>
                     <p class="about-service-text">
-                        ஒவ்வொரு காப்பீட்டு சொத்தும் பிளாக்க்செயினில் உறுதிப்படுத்தப்படுகிறது, இது உண்மையான சொத்துகளால்
-                        ஆதரிக்கப்படும் முதலீடுகளை உறுதி செய்கிறது — பாதுகாப்பானது, நம்பகமானது மற்றும் தெளிவாக
-                        மதிப்பிடக்கூடியது.
+                        Setiap aset asuransi diverifikasi di blockchain, memastikan investasi yang didukung oleh aset
+                        nyata — aman, dapat dipercaya, dan dapat dinilai secara transparan.
                     </p>
                 </div>
                 <div class="about-service-icon">
-                    <img src="./assets/images/Group-2.png" alt="பிளாக்க்செயின் சின்னம்">
+                    <img src="./assets/images/Group-2.png" alt="Ikon Blockchain">
                 </div>
             </div>
 
             <div class="about-service-card fade-element">
                 <div class="about-service-content">
-                    <h3 class="about-service-title">தனிநபர்களுக்கும் நிறுவனங்களுக்கும் அதிகாரமளித்தல்</h3>
+                    <h3 class="about-service-title">Memberdayakan Individu dan Perusahaan</h3>
                     <p class="about-service-text">
-                        தனிப்பட்ட செல்வத் திட்டமிடல் அல்லது நிறுவனங்களுக்கான குறைந்த ஆபத்துள்ள வருமானத் தேவைகள்
-                        ஆகியவற்றிற்காக, நாங்கள் காப்பீட்டு நிதியின் நீண்டகால வளர்ச்சியில் பங்கேற்கும் வாய்ப்பை
-                        வழங்குகிறோம்.
+                        Baik untuk perencanaan kekayaan pribadi atau kebutuhan pendapatan risiko rendah bagi perusahaan,
+                        kami memberikan kesempatan untuk berpartisipasi dalam pertumbuhan jangka panjang dana asuransi.
                     </p>
                 </div>
                 <div class="about-service-icon">
-                    <img src="./assets/images/Group-3.png" alt="அதிகாரம் அளிக்கும் சின்னம்">
+                    <img src="./assets/images/Group-3.png" alt="Ikon Pemberdayaan">
                 </div>
             </div>
         </div>
     </div>
 
+
+    <!-- What we do section -->
     <!-- What we do section -->
     <section class="what-we-do-container reveal-element">
         <div class="what-we-do">
-            <h2>நாங்கள் என்ன செய்கிறோம்</h2>
+            <h2>Apa yang Kami Lakukan</h2>
 
             <video class="about-hero-img" autoplay muted loop playsinline>
                 <source src="./assets/images/about-partB.mp4" type="video/mp4">
             </video>
 
             <div class="cards">
-                <div class="card fade-element">
-                    <h3>காப்பீட்டு சொத்துகளின் டிஜிட்டல் மாற்றம்:</h3>
+                <div class="card animate-zoom-rotate">
+                    <h3>Transformasi Digital Aset Asuransi:</h3>
                     <p>
-                        சேமிப்பு மற்றும் ஆண்டுதோறும் வருமானம் தரும் காப்பீட்டு கொள்கைகளை டிஜிட்டல் சொத்துகளாக மாற்றி,
-                        மேலும் வெளிப்படையான மேலாண்மை மற்றும் நெகிழ்வான செயல்பாடுகளுக்காக வடிவமைக்கப்படுகிறது.
+                        Mengubah polis asuransi tabungan dan penghasil pendapatan tahunan menjadi aset digital,
+                        dirancang untuk manajemen yang transparan dan operasi yang fleksibel.
                     </p>
                 </div>
-                <div class="card fade-element">
-                    <h3>தனிநபர் மற்றும் நிறுவனங்களை சக்திவாய்ந்தவர்களாக மாற்றுதல்:</h3>
+                <div class="card animate-zoom-rotate">
+                    <h3>Memberdayakan Individu dan Perusahaan:</h3>
                     <p>
-                        நீங்கள் ஒரு தனிப்பட்ட நிதி திட்டமிடலுக்காகவோ அல்லது நிறுவன முதலீட்டுக்காகவோ இருந்தால்,
-                        காப்பீட்டு நிதியின் நீண்டகால வளர்ச்சியில் பங்கேற்கலாம்.
+                        Baik untuk perencanaan keuangan pribadi atau investasi perusahaan, Anda dapat berpartisipasi
+                        dalam pertumbuhan jangka panjang dana asuransi.
                     </p>
                 </div>
-                <div class="card fade-element">
-                    <h3>தொகுப்பின் மதிப்பு சங்கிலியில்:</h3>
+                <div class="card animate-zoom-rotate">
+                    <h3>Dalam Rantai Nilai Aset:</h3>
                     <p>
-                        ஒவ்வொரு காப்பீட்டு கொள்கையும் சங்கிலியில் சான்றளிக்கப்படுகிறது, இது உண்மை சொத்துகளால்
-                        ஆதரிக்கப்படுகிறது — பாதுகாப்பானது, நம்பகமானது மற்றும் மதிப்பை தெளிவாக காட்டக்கூடியது.
+                        Setiap polis asuransi disertifikasi dalam rantai, didukung oleh aset nyata — aman, terpercaya,
+                        dan memiliki nilai yang jelas.
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
+
     <!-- What We Do Section  END-->
 
-    <!-- Policy Session  END-->
+    <!-- Policy Session  -->
     <section class="session-bg">
-        <div class="policy-section ">
+        <div class="policy-section">
             <!-- Left: Text Content -->
-            <div class="policy-text animate-zoom-rotate">
-                <h2>உங்கள் காப்பீட்டுத் திட்டத்தை<br><span>பணப்புழக்கமாக மாற்றுங்கள்</span></h2>
+            <div class="policy-text fade-element">
+                <h2>Ubah Rencana Asuransi Anda<br><span>Menjadi Aliran Kas</span></h2>
                 <p>
-                    நாங்கள் காப்பீட்டு சொத்துகளுக்கான ஐந்து முக்கிய துறைகளில் ஒரே இடத்தில் சேவைகளை வழங்குகிறோம்:
-                    சரிபார்ப்பு, மதிப்பு அதிகரிப்பு, விநியோகம், மரபுரிமை மற்றும் திரவத்தன்மை.
-                    மதிப்பீடு மற்றும் டிஜிட்டல் பதிவு முதல் லாபப் பங்கீடு மற்றும் திரவ மேலாண்மை வரை,
-                    "செயலற்ற காப்பீட்டுகளை" அணுகக்கூடிய, தனிப்பயனாக்கக்கூடிய மற்றும் மாற்றக்கூடிய செல்வமாக மாற்ற
-                    உதவுகிறோம்.
+                    Kami menyediakan layanan terpadu dalam lima bidang utama aset asuransi:
+                    verifikasi, peningkatan nilai, distribusi, warisan, dan likuiditas.
+                    Dari penilaian dan pencatatan digital hingga berbagi keuntungan dan manajemen likuiditas,
+                    kami membantu mengubah "asuransi pasif" menjadi kekayaan yang dapat diakses, dipersonalisasi, dan
+                    dapat ditransformasikan.
                 </p>
             </div>
 
             <!-- Right: Services Grid -->
             <div class="policy-services">
                 <div class="policy-card animate-zoom-rotate">
-                    <img src="./assets/images/asset-i.png" alt="சொத்து சரிபார்ப்பு ஐகான்" class="icon-img" />
-                    <h4>சொத்து சரிபார்ப்பு</h4>
-                    <p>உங்கள் காப்பீட்டின் உண்மையான மதிப்பை கண்டறிந்து, சொத்தின் நிலையை அறிக.</p>
+                    <img src="./assets/images/asset-i.png" alt="Ikon Verifikasi Aset" class="icon-img" />
+                    <h4>Verifikasi Aset</h4>
+                    <p>Menemukan nilai sebenarnya dari polis asuransi Anda dan menilai status aset.</p>
                 </div>
 
                 <div class="policy-card animate-zoom-rotate">
-                    <img src="./assets/images/resgi-i.png" alt="பதிவு ஐகான்" class="icon-img" />
-                    <h4>உரிமை பதிவு</h4>
-                    <p>மதிப்பும் திரவத்தன்மையும் உயர, காப்பீட்டுத் திட்டங்களை நிர்வகிக்கக்கூடிய டிஜிட்டல் சொத்துகளாக
-                        மாற்றுங்கள்.</p>
+                    <img src="./assets/images/resgi-i.png" alt="Ikon Pendaftaran" class="icon-img" />
+                    <h4>Pendaftaran Kepemilikan</h4>
+                    <p>Mengubah polis asuransi menjadi aset digital untuk meningkatkan nilai dan likuiditas.</p>
                 </div>
 
                 <div class="policy-card animate-zoom-rotate">
-                    <img src="./assets/images/inc-i.png" alt="வருமான ஐகான்" class="icon-img" />
-                    <h4>வருமான திட்டம்</h4>
-                    <p>மாதாந்திரம் அல்லது காலாண்டாக வழங்கப்படும் லாபப் பங்கீடு கொண்ட நெகிழ்வான வருமானத் திட்டம்.</p>
+                    <img src="./assets/images/inc-i.png" alt="Ikon Pendapatan" class="icon-img" />
+                    <h4>Rencana Pendapatan</h4>
+                    <p>Skema pendapatan fleksibel dengan distribusi keuntungan bulanan atau triwulanan.</p>
                 </div>
 
                 <div class="policy-card animate-zoom-rotate">
-                    <img src="./assets/images/liquid-i.png" alt="திரவத்தன்மை ஐகான்" class="icon-img" />
-                    <h4>திரவ மேலாண்மை</h4>
-                    <p>சொத்துகளைப் பிரித்தெடுக்க, மாற்ற, அல்லது கடனாக பயன்படுத்த நெகிழ்வான கட்டுப்பாடுகளுடன் ஆதரவு
-                        வழங்குகிறது.</p>
+                    <img src="./assets/images/liquid-i.png" alt="Ikon Likuiditas" class="icon-img" />
+                    <h4>Manajemen Likuiditas</h4>
+                    <p>Mendukung fleksibilitas dalam membagi, menukar, atau menggunakan aset sebagai jaminan.</p>
                 </div>
 
                 <div class="policy-card animate-zoom-rotate">
-                    <img src="./assets/images/custo-i.png" alt="மரபுரிமை ஐகான்" class="icon-img" />
-                    <h4>மரபுரிமை திட்டமிடல்</h4>
-                    <p>உங்கள் காப்பீட்டு சொத்துகள் வாரிசுகளுக்கோ அல்லது நலனாளர்களுக்கோ சீராக மாற்றப்படுவதை உறுதி செய்க.
+                    <img src="./assets/images/custo-i.png" alt="Ikon Warisan" class="icon-img" />
+                    <h4>Perencanaan Warisan</h4>
+                    <p>Memastikan aset asuransi Anda ditransfer secara mulus kepada ahli waris atau penerima manfaat.
                     </p>
                 </div>
             </div>
@@ -1474,17 +1570,17 @@
     </section>
 
 
-    <!-- Avia பகுதி -->
+    <!-- Bagian Avia -->
     <div class="avia-main reveal-element">
         <div class="avia-wrapper">
             <div class="avia-header reveal-element">
                 <div class="avia-brand">Avia Asia —</div>
-                <div class="avia-slogan">உங்கள் சொத்தின் பின்னணி இயக்கி</div>
+                <div class="avia-slogan">Penggerak di balik aset Anda</div>
                 <div class="avia-intro">
-                    உங்கள் காப்பீட்டு கொள்கை ஒரு ஒப்பந்தம் மட்டுமல்ல — அது ஒரு சொத்து வாய்ப்பு.
-                    நாங்கள் பயனாளர்களுக்கு சொத்து உரிமையை உறுதிப்படுத்த, வருமானத்தை திறக்க,
-                    மற்றும் திரவத்தன்மையை நிர்வகிக்க உதவுகிறோம், நிலையான காப்பீட்டு தயாரிப்புகளை
-                    வசதியான, அணுகக்கூடிய மற்றும் யுக்திபூர்வமான செல்வ இயக்கியாக மாற்றுகிறோம்.
+                    Polis asuransi Anda bukan hanya sebuah kontrak — ini adalah peluang aset.
+                    Kami membantu pengguna mengamankan kepemilikan aset, membuka penghasilan,
+                    dan mengelola likuiditas, mengubah produk asuransi tradisional menjadi kekayaan yang
+                    nyaman, dapat diakses, dan strategis.
                 </div>
             </div>
 
@@ -1494,14 +1590,13 @@
                         <div class="avia-progress-bg">
                             <div class="avia-progress-fill red"></div>
                             <div class="avia-percent">22%</div>
-                            <div class="avia-label">மாத வருமான ஆலோசனை</div>
+                            <div class="avia-label">Konsultasi Penghasilan Bulanan</div>
                         </div>
                     </div>
                     <div class="avia-stat-text">
-                        முதலீட்டு உத்திகள் மற்றும் ஒதுக்கீடுகளின் பகுப்பாய்வின் மூலம்,
-                        கொள்கை சொத்துகள் பாரம்பரிய முறைகளை விட 22% அதிக மாத வருமானத்தை
-                        உருவாக்குகின்றன — நிலையானது, தெளிவானது மற்றும் குடும்ப வரவோட்டத்தை
-                        ஆதரிக்கத் தயாராக உள்ளது.
+                        Melalui analisis strategi investasi dan alokasi,
+                        aset polis menghasilkan pendapatan bulanan 22% lebih tinggi dibandingkan metode tradisional —
+                        stabil, transparan, dan siap mendukung arus kas keluarga Anda.
                     </div>
                 </div>
 
@@ -1510,13 +1605,12 @@
                         <div class="avia-progress-bg">
                             <div class="avia-progress-fill blue"></div>
                             <div class="avia-percent">72%</div>
-                            <div class="avia-label">72% நீண்டகால கொள்கையாளர்கள்</div>
+                            <div class="avia-label">72% Pemegang Polis Jangka Panjang</div>
                         </div>
                     </div>
                     <div class="avia-stat-text">
-                        5 ஆண்டுகளுக்கு மேல் வைத்துள்ள கொள்கைகளில் சேமிப்பு மதிப்பில்
-                        குறிப்பிடத்தக்க வளர்ச்சி காணப்படுகிறது — எங்கள் ஆய்வுகள் மற்றும் முடிவுகள்
-                        சராசரி மதிப்பீட்டு உயர்வை 72% என நிரூபிக்கின்றன.
+                        Polis yang disimpan lebih dari 5 tahun menunjukkan peningkatan signifikan dalam nilai tabungan —
+                        riset kami menunjukkan rata-rata kenaikan penilaian mencapai 72%.
                     </div>
                 </div>
 
@@ -1525,13 +1619,13 @@
                         <div class="avia-progress-bg">
                             <div class="avia-progress-fill green"></div>
                             <div class="avia-percent">80%</div>
-                            <div class="avia-label">80% 60 வயதுக்கு மேற்பட்டவர்கள் உறுதிப்படுத்தப்பட்டனர்</div>
+                            <div class="avia-label">80% Berusia Di Atas 60 Tahun Terverifikasi</div>
                         </div>
                     </div>
                     <div class="avia-stat-text">
-                        இரண்டாவது கொள்கை ஆய்வில், எங்களது பண்பாடு மரபுப்பெருமை திறனையும்,
-                        கூடுதல் சொத்துகளையும், சமமான மரபுக்கட்டமைப்பையும்
-                        மற்றும் மதிப்புடைய சொத்துகளின் மூலம் சிறந்த ஆபத்து சமநிலையையும் மேம்படுத்தியது.
+                        Dalam tinjauan kebijakan kedua, pendekatan kami meningkatkan stabilitas warisan,
+                        menambah nilai aset, dan memperkuat keseimbangan risiko
+                        melalui struktur pewarisan yang adil dan properti yang bernilai.
                     </div>
                 </div>
             </div>
@@ -1539,56 +1633,56 @@
     </div>
 
 
-    <!-- Footer Session -->
+
+    <!-- Sesi Footer -->
     <div class="core-vision-section" id="vision">
         <div class="core-vision-container">
             <div class="content-wrapper">
                 <div class="section-header fade-element">
-                    <h1 class="section-title">எங்கள் முக்கிய மதிப்புகளும் எதிர்கால பார்வையும்</h1>
+                    <h1 class="section-title">Nilai Inti dan Visi Masa Depan Kami</h1>
                     <p class="section-subtitle">
-                        ஒருங்கிணைந்த முயற்சியாக, நாங்கள் காப்பீட்டு சொத்துகளுக்கான புதிய எதிர்காலத்தை வடிவமைக்கிறோம்—
-                        பாதுகாப்பை நீடித்த மற்றும் நிலையான நிதி வளர்ச்சிக்கான இயக்க சக்தியாக மாற்றுகிறோம்,
-                        நீண்டகால மதிப்புமிக்க வளர்ச்சி மற்றும் பாதுகாக்கப்பட்ட செல்வ வாரிசு நோக்காக.
+                        Sebagai upaya terpadu, kami membentuk masa depan baru untuk aset asuransi —
+                        mengubah keamanan menjadi kekuatan penggerak pertumbuhan keuangan yang berkelanjutan,
+                        menuju pertumbuhan bernilai jangka panjang dan warisan kekayaan yang terlindungi.
                     </p>
                 </div>
 
                 <div class="vision-grid">
                     <div class="vision-item fade-element">
                         <div class="vision-image philosophy-theme">
-                            <img src="./assets/images/philo-logo.png" alt="தத்துவ ஐகான்" class="vision-icon-img" />
-                            <h3 class="vision-title">எங்கள் தத்துவம்</h3>
+                            <img src="./assets/images/philo-logo.png" alt="Ikon Filosofi" class="vision-icon-img" />
+                            <h3 class="vision-title">Filosofi Kami</h3>
                             <p class="vision-description">
-                                நேர்மையின் அடிப்படையில் கட்டமைக்கப்பட்டு, புதுமையால் முன்னெடுக்கப்படும் எங்கள்
-                                நிறுவனமானது
-                                ஒவ்வொரு வாடிக்கையாளருக்கும் வெளிப்படையான, பாதுகாப்பான மற்றும் திறமையான காப்பீட்டு சொத்து
-                                மேலாண்மை அனுபவத்தை வழங்க உறுதிபூண்டுள்ளது.
-                                ஒவ்வொருவரும் சிறந்த பாதுகாப்பையும் நீண்டகால நிதி நிலைத்தன்மையையும் பெற தகுதியுடையவர்கள்
-                                என்று நாங்கள் நம்புகிறோம்.
+                                Didirikan atas dasar integritas dan dipandu oleh inovasi,
+                                perusahaan kami berkomitmen untuk memberikan pengalaman manajemen aset asuransi
+                                yang transparan, aman, dan efisien kepada setiap pelanggan.
+                                Kami percaya bahwa setiap orang layak mendapatkan perlindungan terbaik dan stabilitas
+                                finansial jangka panjang.
                             </p>
                         </div>
                     </div>
 
                     <div class="vision-item fade-element">
                         <div class="vision-image vision-theme">
-                            <img src="./assets/images/vision-logo.png" alt="பார்வை ஐகான்" class="vision-icon-img" />
-                            <h3 class="vision-title">எங்கள் பார்வை</h3>
+                            <img src="./assets/images/vision-logo.png" alt="Ikon Visi" class="vision-icon-img" />
+                            <h3 class="vision-title">Visi Kami</h3>
                             <p class="vision-description">
-                                ஆசியாவின் முன்னணி டிஜிட்டல் காப்பீட்டு சொத்து மேலாண்மை தளமாக மாறுவது —
-                                பாரம்பரிய காப்பீட்டை நுண்ணறிவுடனான திரவ சொத்துகளாக மாற்றி
-                                ஒவ்வொரு காப்பீட்டு திட்டத்திலிருந்தும் அதிக நிதி மதிப்பை உருவாக்குவதே எங்கள் நோக்கம்.
+                                Menjadi platform manajemen aset asuransi digital terkemuka di Asia —
+                                misi kami adalah mengubah asuransi tradisional menjadi aset cair berbasis kecerdasan
+                                dan menciptakan nilai finansial maksimal dari setiap polis.
                             </p>
                         </div>
                     </div>
 
                     <div class="vision-item fade-element">
                         <div class="vision-image commitment-theme">
-                            <img src="./assets/images/commit-logo.png" alt="உறுதி ஐகான்" class="vision-icon-img" />
-                            <h3 class="vision-title">எங்கள் உறுதி</h3>
+                            <img src="./assets/images/commit-logo.png" alt="Ikon Komitmen" class="vision-icon-img" />
+                            <h3 class="vision-title">Komitmen Kami</h3>
                             <p class="vision-description">
-                                வாடிக்கையாளர்களின் நலன்களை பாதுகாப்பதற்கும், ஒழுங்குமுறை தரநிலைகளை கடைப்பிடிக்கவும்,
-                                நவீன தொழில்நுட்பங்களை தொழில்முறை சேவையுடன் ஒருங்கிணைத்து
-                                நம்பகமான மற்றும் நீண்டகால செல்வ ஒத்துழைப்பை உருவாக்குவதற்கும் எங்கள் முழு அர்ப்பணிப்பும்
-                                உண்டு.
+                                Kami sepenuhnya berkomitmen untuk melindungi kepentingan nasabah,
+                                mematuhi standar regulasi, dan mengintegrasikan teknologi modern
+                                dengan layanan profesional untuk membangun kemitraan kekayaan yang dapat dipercaya dan
+                                berkelanjutan.
                             </p>
                         </div>
                     </div>
@@ -1596,53 +1690,53 @@
             </div>
 
             <div class="providers-area">
-                <h3 class="providers-heading">தனியார் சுகாதார காப்பீட்டு வழங்குநர்களில் சில:</h3>
+                <h3 class="providers-heading">Beberapa Penyedia Asuransi Kesehatan Swasta:</h3>
                 <div class="logo-carousel fade-element">
                     <div class="logo-track">
-                        <!-- First set of logos -->
+                        <!-- Set pertama logo -->
                         <div class="logo-item">
-                            <img src="./assets/images/logo1.png" alt="Aetna லோகோ" width="80" height="40" />
+                            <img src="./assets/images/logo1.png" alt="Logo Aetna" width="80" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo2.png" alt="ALC லோகோ" width="80" height="40" />
+                            <img src="./assets/images/logo2.png" alt="Logo ALC" width="80" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo3.png" alt="Allianz Care லோகோ" width="100" height="40" />
+                            <img src="./assets/images/logo3.png" alt="Logo Allianz Care" width="100" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo4.png" alt="April லோகோ" width="80" height="40" />
+                            <img src="./assets/images/logo4.png" alt="Logo April" width="80" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo5.png" alt="AXA லோகோ" width="60" height="40" />
+                            <img src="./assets/images/logo5.png" alt="Logo AXA" width="60" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo6.png" alt="Cigna லோகோ" width="80" height="40" />
+                            <img src="./assets/images/logo6.png" alt="Logo Cigna" width="80" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo7.png" alt="FI லோகோ" width="60" height="40" />
+                            <img src="./assets/images/logo7.png" alt="Logo FI" width="60" height="40" />
                         </div>
 
-                        <!-- Duplicate set for seamless loop -->
+                        <!-- Duplikat untuk loop tanpa henti -->
                         <div class="logo-item">
-                            <img src="./assets/images/logo1.png" alt="Aetna Logo" width="80" height="40" />
+                            <img src="./assets/images/logo1.png" alt="Logo Aetna" width="80" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo2.png" alt="ALC Logo" width="80" height="40" />
+                            <img src="./assets/images/logo2.png" alt="Logo ALC" width="80" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo3.png" alt="Allianz Care Logo" width="100" height="40" />
+                            <img src="./assets/images/logo3.png" alt="Logo Allianz Care" width="100" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo4.png" alt="April Logo" width="80" height="40" />
+                            <img src="./assets/images/logo4.png" alt="Logo April" width="80" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo5.png" alt="AXA Logo" width="60" height="40" />
+                            <img src="./assets/images/logo5.png" alt="Logo AXA" width="60" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo6.png" alt="Cigna Logo" width="80" height="40" />
+                            <img src="./assets/images/logo6.png" alt="Logo Cigna" width="80" height="40" />
                         </div>
                         <div class="logo-item">
-                            <img src="./assets/images/logo7.png" alt="FI Logo" width="60" height="40" />
+                            <img src="./assets/images/logo7.png" alt="Logo FI" width="60" height="40" />
                         </div>
                     </div>
                 </div>
@@ -1651,10 +1745,8 @@
     </div>
 
     <div class="section-footer">
-        பதிப்புரிமை © 2025— AVIA ASIA LIMITED
+        Hak Cipta © 2025 — AVIA ASIA LIMITED
     </div>
-
-
 
     <script>
         // Mobile menu toggle
