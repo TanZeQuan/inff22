@@ -238,15 +238,17 @@
             min-height: 110vh;
             display: flex;
             align-items: center;
+            justify-content: center;
             padding: 100px 0 150px;
             overflow: hidden;
             clip-path: ellipse(100% 85% at 50% 0%);
             text-align: center;
             z-index: 1;
+            background: #000;
+            /* Fallback background */
         }
 
-        /* ✅ Video background behind everything */
-       .hero-bg-video {
+        .hero-bg-video {
             position: absolute;
             top: 0;
             left: 0;
@@ -255,10 +257,9 @@
             object-fit: cover;
             z-index: 0;
             pointer-events: none;
-            /* Optional: Prevent video from blocking clicks */
         }
 
-        /* ✅ Gradient overlay above video */
+        /* Dark gradient overlay */
         .hero::before {
             content: '';
             position: absolute;
@@ -270,7 +271,7 @@
             z-index: 1;
         }
 
-        /* ✅ Curved white bottom (as you already had) */
+        /* White bottom curve */
         .hero::after {
             content: '';
             position: absolute;
@@ -284,7 +285,7 @@
             z-index: 3;
         }
 
-        /* ✅ Text and button content on top of everything */
+        /* Content */
         .hero-content {
             color: white;
             position: relative;
@@ -307,34 +308,36 @@
         .hero p {
             font-size: clamp(1rem, 3vw, 1.2rem);
             margin: 0 auto 2.5rem;
-            opacity: 0.9;
             max-width: 600px;
-            animation: fadeInUp 1s ease-out 0.2s forwards;
             opacity: 0;
+            animation: fadeInUp 1s ease-out 0.2s forwards;
         }
 
         .apply-btn {
-            background: linear-gradient(135deg, #4CAF50, #A8E063);
-            color: white;
             padding: 12px 30px;
-            border: none;
-            border-radius: 50px;
             font-size: 1rem;
             font-weight: bold;
+            border: none;
+            border-radius: 30px;
+            background-color: var(--primary-color);
+            color: #fff;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-            position: relative;
-            z-index: 1;
+            transition: background-color 0.3s ease;
         }
 
-        /* Hover 浮动 + 发光 */
-        .apply-btn:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.5);
+        /* Animation Keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
 
         /* 点击时按压感 */
         .apply-btn:active {
@@ -1373,22 +1376,24 @@
     <!-- Hero Section -->
     <section class="hero" id="home">
         <video class="hero-bg-video" autoplay muted loop playsinline>
-            <source src="./assets/images/banner-new.mp4" type="video/mp4">
+            <source src="./assets/images/banner-new.mp4" type="video/mp4" />
         </video>
+
         <div class="container">
-            <div class="hero-content fade-element">
+            <div class="hero-content">
                 <h1>
-                    <span class="highlight">AVIA ASIA</span> LIMITED<br>
+                    <span class="highlight">AVIA ASIA</span> LIMITED<br />
                     Make Every Policy A Valuable Asset
                 </h1>
                 <p>
-                    We are not "selling insurance"; we are building a new insurance finance system where everyone can
-                    participate and share in the returns.
+                    We are not "selling insurance"; we are building a new insurance finance
+                    system where everyone can participate and share in the returns.
                 </p>
-                <button class="apply-btn fade-element">Apply Now</button>
+                <button class="apply-btn">Apply Now</button>
             </div>
         </div>
     </section>
+
 
     <!-- About Section -->
     <div class="about-wrapper" id="about">
@@ -1956,14 +1961,23 @@
             const heroVideo = document.querySelector('.hero-bg-video');
 
             if (heroVideo) {
+                // Set properties for maximum mobile compatibility
                 heroVideo.muted = true;
-                heroVideo.setAttribute('playsinline', ''); // Extra safety for iOS
+                heroVideo.playsInline = true;
+                heroVideo.autoplay = true;
+                heroVideo.loop = true;
+
+                // Also set attributes (for some stubborn browsers)
+                heroVideo.setAttribute('muted', '');
+                heroVideo.setAttribute('playsinline', '');
                 heroVideo.setAttribute('autoplay', '');
                 heroVideo.setAttribute('loop', '');
+
+                heroVideo.load(); // Ensure it's reloaded properly
                 heroVideo.play().catch(e => console.log('Autoplay prevented:', e));
             }
 
-            // Lazy load videos with data-src
+            // Lazy load any videos with data-src
             const lazyVideos = document.querySelectorAll('video[data-src]');
             lazyVideos.forEach(video => {
                 const src = video.getAttribute('data-src');
