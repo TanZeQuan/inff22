@@ -328,10 +328,37 @@
             background-color: var(--primary-color);
             color: #fff;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            animation: jumpPulseGlow 1.8s ease-in-out infinite;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 0 rgba(255, 255, 255, 0);
         }
 
-        /* Animation Keyframes */
+        /* Jump + Glow Pulse Keyframes */
+        @keyframes jumpPulseGlow {
+
+            0%,
+            100% {
+                transform: translateY(0);
+                box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+            }
+
+            30% {
+                transform: translateY(-8px);
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+            }
+
+            50% {
+                transform: translateY(0);
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            }
+
+            70% {
+                transform: translateY(-4px);
+                box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        /* Fade In Effect (Optional, if you use it on load) */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -344,14 +371,17 @@
             }
         }
 
-
-        /* 点击时按压感 */
+        /* Press Effect */
         .apply-btn:active {
             transform: scale(0.97);
             box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3) inset;
         }
 
-
+        .apply-btn:hover {
+            background: linear-gradient(145deg, #43a047, #66bb6a);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
+        }
 
         /****************** ABOUT SECTION ***************/
         .about-wrapper {
@@ -679,6 +709,7 @@
             width: 50px;
             height: 50px;
             margin-bottom: 15px;
+             animation: jumpPulseGlow 2.0s ease-in-out infinite;
         }
 
         .policy-card h4 {
@@ -1974,15 +2005,6 @@
             // 初始化所有动画
             animateOnScroll();
         });
-
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        if (prefersReducedMotion) {
-            document.querySelectorAll('.avia-progress-fill::after').forEach(el => {
-                el.style.animation = 'shine 2.5s infinite';
-            });
-        }
-
     </script>
 </body>
 
