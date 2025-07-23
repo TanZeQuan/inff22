@@ -1955,32 +1955,6 @@
             // 初始化所有动画
             animateOnScroll();
         });
-
-        // 视频自动播放处理
-        window.addEventListener('load', function () {
-            const heroVideo = document.querySelector('.hero-bg-video');
-
-            if (heroVideo) {
-                heroVideo.muted = true;
-                heroVideo.setAttribute('playsinline', '');
-                heroVideo.setAttribute('autoplay', '');
-                heroVideo.setAttribute('loop', '');
-                // Try to autoplay
-                heroVideo.play().catch((e) => {
-                    console.log('Autoplay prevented:', e);
-                });
-            }
-
-            // Lazy load videos with data-src (optional)
-            const lazyVideos = document.querySelectorAll('video[data-src]');
-            lazyVideos.forEach((video) => {
-                const src = video.getAttribute('data-src');
-                if (src) {
-                    video.src = src;
-                    video.load();
-                }
-            });
-        });
     </script>
 </body>
 
