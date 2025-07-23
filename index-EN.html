@@ -862,42 +862,40 @@
         }
 
         .avia-progress-fill {
-            animation: fillLiquid 2.5s ease-in-out forwards;
-            width: 0%;
-            position: relative;
-            overflow: hidden;
-        }
+    animation: fillLiquid 2.5s ease-in-out forwards;
+    width: 0%;
+    position: relative;
+    overflow: hidden;
+    height: 20px; /* Ensure height is defined */
+    background: #4caf50; /* Optional: to make progress bar visible */
+    border-radius: 10px; /* Optional: rounded effect */
+}
 
-        /* 进度条光泽效果 */
-        .avia-progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg,
-                    rgba(255, 255, 255, 0) 0%,
-                    rgba(255, 255, 255, 0.3) 50%,
-                    rgba(255, 255, 255, 0) 100%);
-            animation: shine 2.5s infinite;
-        }
+.avia-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 200%; /* Ensure shine has enough space to animate */
+    background: linear-gradient(90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%);
+    animation: shine 2.5s infinite;
+    will-change: transform; /* Ensures iOS renders the animation */
+}
+  
+@keyframes shine {
+    0% {
+        transform: translateX(-100%);
+    }
 
-        .avia-progress-fill::after {
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            -webkit-transform: translate3d(0, 0, 0);
-        }
+    100% {
+        transform: translateX(100%);
+    }
+}
 
-        @keyframes shine {
-            0% {
-                transform: translateX(-100%);
-            }
-
-            100% {
-                transform: translateX(100%);
-            }
-        }
 
         /**** animation fade in out *****/
         .reveal-element {
